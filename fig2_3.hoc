@@ -1,0 +1,178 @@
+// ------------------------------------------
+
+// This file compute the main results of fig 2 and fig 3.
+// It compares dADF and hADF spatial extents if the main axon is myelinated or not.
+
+// ------------------------------------------
+
+
+
+load_file("nrngui.hoc")
+
+v_init=-70
+
+celsius=37
+
+
+
+
+// Create graphs to plot the results when the soma is depolarized during 10 s before the spike
+objref g_subthreshold_depolarization
+
+g_subthreshold_depolarization=new Graph(0)
+
+g_subthreshold_depolarization.view(0,0,6000,15,0,100,300,200)
+
+objref g_AP_area_increase
+
+g_AP_area_increase=new Graph(0)
+
+g_AP_area_increase.view(0,100,6000,20,500,100,300,200)
+
+objref g_dADF
+
+g_dADF=new Graph(0)
+
+g_dADF.view(0,100,6000,55,1000,100,300,200)
+
+objref g_dADF_first_bouton
+
+g_dADF_first_bouton=new Graph(0)
+
+g_dADF_first_bouton.view(0,100,5000,40,1500,100,300,200)
+
+// Create graphs to plot the results when the soma is depolarized during 200 ms before the spike
+objref g_subthreshold_hyerpolarization
+
+g_subthreshold_hyerpolarization=new Graph(0)
+
+g_subthreshold_hyerpolarization.view(0,0,6000,15,0,500,300,200)
+
+objref g_AP_overshoot_increase
+
+g_AP_overshoot_increase=new Graph(0)
+
+g_AP_overshoot_increase.view(0,0,6000,10,500,500,300,200)
+
+objref g_hADF
+
+g_hADF=new Graph(0)
+
+g_hADF.view(1,100,6000,35,1000,500,300,200)
+
+objref g_hADF_first_bouton
+
+g_hADF_first_bouton=new Graph(0)
+
+g_hADF_first_bouton.view(1,100,5000,35,1500,500,300,200)
+
+
+g_subthreshold_depolarization.label(0.3,0.8,"normalized subthreshold depolarization (mV)",2,1,0,0,1)
+g_AP_area_increase.label(0.3,0.8,"normalized AP area increase (%)",2,1,0,0,1)
+g_dADF.label(0.3,0.8,"dADF all presynaptic sites (%)",2,1,0,0,1)
+g_dADF_first_bouton.label(0.3,0.8,"dADF first presypatic sites (%)",2,1,0,0,1)
+g_subthreshold_hyerpolarization.label(0.3,0.8,"normalized subthreshold hyperpolarization (mV)",2,1,0,0,1)
+g_AP_overshoot_increase.label(0.3,0.8,"normalized AP overshoot increase (mV)",2,1,0,0,1)
+g_hADF.label(0.3,0.8,"hADF all presynaptic sites (%)",2,1,0,0,1)
+g_hADF_first_bouton.label(0.3,0.8,"hADF first presypatic sites (%)",2,1,0,0,1)
+
+
+
+// run the model with an unmyelinated mainaxon
+load_file("unmyelinated_axon.hoc")
+
+
+run_all_simulations()
+
+
+
+// plot the results when the soma is depolarized during 10 s before AP
+vec_voltage_mainaxon_before_AP_depol_normalized.mark(g_subthreshold_depolarization,vec_dist_mainaxon, "O",2,1)
+vec_voltage_mainaxon_before_AP_depol_normalized.line(g_subthreshold_depolarization,vec_dist_mainaxon,1,1)
+g_subthreshold_depolarization.label(0.5,0.7,"unmyelinated model",2,1,0,0,1)
+
+vec_dist_mainaxon.remove(0)
+vec_intPA_depol_normalized.remove(0)
+vec_intPA_depol_normalized.mark(g_AP_area_increase,vec_dist_mainaxon,"O",2,1)
+vec_intPA_depol_normalized.line(g_AP_area_increase,vec_dist_mainaxon,1,1)
+g_AP_area_increase.label(0.5,0.7,"unmyelinated model",2,1,0,0,1)
+vec_dist_mainaxon.insrt(0,0)
+
+vec_dADF_bouton.mark(g_dADF,vec_dist_bouton, "O",2,1)
+g_dADF.label(0.5,0.7,"unmyelinated model",2,1,0,0,1)
+
+vec_dADF_first_bouton.mark(g_dADF_first_bouton,vec_dist_first_bouton, "O",2,1)
+vec_dADF_first_bouton.line(g_dADF_first_bouton,vec_dist_first_bouton,1,6)
+g_dADF_first_bouton.label(0.5,0.7,"unmyelinated model",2,1,0,0,1)
+
+
+// plot the results when the soma is hyperpolarized during 200 ms before AP
+vec_voltage_mainaxon_before_AP_hyperpol_normalized.mark(g_subthreshold_hyerpolarization,vec_dist_mainaxon, "O",2,1)
+vec_voltage_mainaxon_before_AP_hyperpol_normalized.line(g_subthreshold_hyerpolarization,vec_dist_mainaxon,1,1)
+g_subthreshold_hyerpolarization.label(0.5,0.7,"unmyelinated model",2,1,0,0,1)
+
+vec_dist_mainaxon.remove(0)
+vec_overshoot_hyperpol_normalized.remove(0)
+vec_overshoot_hyperpol_normalized.mark(g_AP_overshoot_increase,vec_dist_mainaxon, "O",2,1)
+vec_overshoot_hyperpol_normalized.line(g_AP_overshoot_increase,vec_dist_mainaxon,1,1)
+g_AP_overshoot_increase.label(0.5,0.7,"unmyelinated model",2,1,0,0,1)
+vec_dist_mainaxon.insrt(0,0)
+
+vec_hADF_bouton.mark(g_hADF,vec_dist_bouton, "O",2,1)
+g_hADF.label(0.5,0.7,"unmyelinated model",2,1,0,0,1)
+
+vec_hADF_first_bouton.mark(g_hADF_first_bouton,vec_dist_first_bouton, "O",2,1)
+vec_hADF_first_bouton.line(g_hADF_first_bouton,vec_dist_first_bouton,1,6)
+g_hADF_first_bouton.label(0.5,0.7,"unmyelinated model",2,1,0,0,1)
+
+
+
+
+// run the model with a myelinated mainaxon
+load_file("myelinated_axon_1.hoc")
+
+
+run_all_simulations()
+
+
+
+// plot the results when the soma is depolarized during 10 s before AP
+vec_voltage_mainaxon_before_AP_depol_normalized.mark(g_subthreshold_depolarization,vec_dist_mainaxon, "O",2,2)
+vec_voltage_mainaxon_before_AP_depol_normalized.line(g_subthreshold_depolarization,vec_dist_mainaxon,2,1)
+g_subthreshold_depolarization.label(0.5,0.65,"myelinated model",2,1,0,0,2)
+
+a=vec_dist_mainaxon.x[0]
+vec_dist_mainaxon.remove(0)
+vec_intPA_depol_normalized.remove(0)
+vec_intPA_depol_normalized.mark(g_AP_area_increase,vec_dist_mainaxon, "O",2,2)
+vec_intPA_depol_normalized.line(g_AP_area_increase,vec_dist_mainaxon,2,1)
+g_AP_area_increase.label(0.5,0.65,"myelinated model",2,1,0,0,2)
+vec_dist_mainaxon.insrt(0,a)
+
+vec_dADF_bouton.mark(g_dADF,vec_dist_bouton, "O",2,2)
+g_dADF.label(0.5,0.65,"myelinated model",2,1,0,0,2)
+
+vec_dADF_first_bouton.mark(g_dADF_first_bouton,vec_dist_first_bouton, "O",2,2)
+vec_dADF_first_bouton.line(g_dADF_first_bouton,vec_dist_first_bouton,2,6)
+g_dADF_first_bouton.label(0.5,0.65,"myelinated model",2,1,0,0,2)
+
+
+// plot the results when the soma is hyperpolarized during 200 ms before AP
+vec_voltage_mainaxon_before_AP_hyperpol_normalized.mark(g_subthreshold_hyerpolarization,vec_dist_mainaxon, "O",2,3)
+vec_voltage_mainaxon_before_AP_hyperpol_normalized.line(g_subthreshold_hyerpolarization,vec_dist_mainaxon,3,1)
+g_subthreshold_hyerpolarization.label(0.5,0.65,"myelinated model",2,1,0,0,3)
+
+a=vec_dist_mainaxon.x[0]
+vec_dist_mainaxon.remove(0)
+vec_overshoot_hyperpol_normalized.remove(0)
+vec_overshoot_hyperpol_normalized.mark(g_AP_overshoot_increase,vec_dist_mainaxon, "O",2,3)
+vec_overshoot_hyperpol_normalized.line(g_AP_overshoot_increase,vec_dist_mainaxon,3,1)
+g_AP_overshoot_increase.label(0.5,0.65,"myelinated model",2,1,0,0,3)
+vec_dist_mainaxon.insrt(0,a)
+
+vec_hADF_bouton.mark(g_hADF,vec_dist_bouton, "O",2,3)
+g_hADF.label(0.5,0.65,"myelinated model",2,1,0,0,3)
+
+vec_hADF_first_bouton.mark(g_hADF_first_bouton,vec_dist_first_bouton, "O",2,3)
+vec_hADF_first_bouton.line(g_hADF_first_bouton,vec_dist_first_bouton,3,6)
+g_hADF_first_bouton.label(0.5,0.65,"myelinated model",2,1,0,0,3)
